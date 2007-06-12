@@ -438,7 +438,7 @@
 		      <property name="spacing">0</property>
 
 		      <child>
-			<widget class="GtkRadioButton" id="radiobutton1">
+			<widget class="GtkRadioButton" id="optMax">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="label" translatable="yes">Maximizar</property>
@@ -457,7 +457,7 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkRadioButton" id="radiobutton2">
+			<widget class="GtkRadioButton" id="optMin">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="label" translatable="yes">Minimizar</property>
@@ -467,7 +467,7 @@
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
-			  <property name="group">radiobutton1</property>
+			  <property name="group">optMax</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>

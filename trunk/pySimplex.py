@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#DFFFFFFFFFFFFFFF
+
 #Copyright Juan Carrasco G. <juacarrag@gmail.com>
-#          ##########
-#          ##########
-#          ########## 
+#          Francisco Brunel.<franciscobrunel@gmail.com>
+#          Cesar Casrrion.  <carrioninf@gmail.com> 
+#          Francisco Ahumada.
+#	   Cristopher Drecmamm. 
 
 #pySimplexPL es software libre; puede redistribuirlo y/o modificarlo
 #bajo los términos de la Licencia Pública General de GNU tal como
@@ -158,21 +159,20 @@ class WnIngreso(GladeConnect):
     def on_acerca_de(self,*args):
         from time import localtime
         autores=['Juan Carrasco <juacarrag@gmail.com>',
-                 'Plumero <aaaaaaaaaaa>',
-                 'Kramer <bbbbbbbbbbbbbbbb>',
-                 'Palermo <aaaaaaaaaaaaaaa>',
-                 'Pollo <aaaaaaaaaaaaa>']
+                 'Cesar Casrrion <carrioninf@gmail.COM>',
+                 'Francisco Ahumada <bbbbbbbbbbbbbbbb>',
+                 'Francisco Brunel <franciscobrunel@gmail.com>',
+                 'Cristopher Drecmamm <aaaaaaaaaaaaa>']
         comentario="""Comentario aqui """
-        logo="pySimplex.png"
         copyright="\302\251 Copyright %s Juan Carrasco G.\n" % str(localtime()[0])
-        copyright=copyright +"\302\251 Copyright %s Plumero.\n" % str(localtime()[0])
-        copyright=copyright +"\302\251 Copyright %s Palermo.\n" % str(localtime()[0])
-        copyright=copyright +"\302\251 Copyright %s Pollo.\n" % str(localtime()[0])
-        copyright=copyright +"\302\251 Copyright %s Kramer." % str(localtime()[0])
+        copyright=copyright +"\302\251 Copyright %s Cesar Casrrion..\n" % str(localtime()[0])
+        copyright=copyright +"\302\251 Copyright %s Francisco Brunel.\n" % str(localtime()[0])
+        copyright=copyright +"\302\251 Copyright %s Cristopher Drecmamm.\n" % str(localtime()[0])
+        copyright=copyright +"\302\251 Copyright %s Francisco Ahumada." % str(localtime()[0])
         DialogoAcercaDe(padre=self.wnIngreso,
                         nombre='pySimplexPL',
                         autor=autores,
-                        logo=logo,
+                        logo="pySimplex.png",
                         comentario=comentario,
                         copyright=copyright)
 
@@ -219,14 +219,28 @@ class WnIngreso(GladeConnect):
         self.inicio()
         
     def on_btnNext_clicked(self,*args):
+        self.optMax.get_active()
         iter=self.modelo.get_iter(0)
         row = self.modelo.get_path(iter)
         fo = []
         for i in range(0,self.variables):
-            fo.append(int(self.modelo[row][i] ) * (-1))
+            try:
+                #######maximisar True#################
+                if self.optMax.get_active():
+                    fo.append(int(self.modelo[row][i]))
+                else:
+                    fo.append(int(self.modelo[row][i])*-1)
+                #################################
+            except:
+                msg = """Error de ingreso de datos
+en la F.O. : en el dato '''%s''' solo se aceptan numeros"""% (self.modelo[row][i] ) 
+                aviso(self.wnIngreso,msg,tipo=gtk.MESSAGE_ERROR)
+                return
         fo.append('0')
         variablesBasicas = []
         lista = []
+        todas=['Z']
+        variablesA=[]
         lista.append(fo)
         n = self.variables
         for colum in range(0,self.restricciones):
@@ -235,33 +249,46 @@ class WnIngreso(GladeConnect):
             n = n +1
             if str(self.modeloR[row][self.variables + 1]) == '<=':
                 variablesBasicas.append('S%s' % n)
-            else:
+                todas.append('S%s' % n)
+            elif str(self.modeloR[row][self.variables + 1])=='>=':
                 variablesBasicas.append('E%s' % n)
+                #todas.append('E%s' % n)
+                variablesA.append('A%s' % (colum+1))
+                todas.append(['A%s' % (colum+1),'E%s' % n])
+                #variablesBasicas.append('A%s' % (colum+1))
+            else:
+                n=n-1
+                variablesA.append('A%s' % (colum+1))
+                todas.append('A%s' % (colum+1))
+                #variablesBasicas.append('A%s' % (colum+1))
             re = []
             for i in range(1,self.variables+1):
+                #print i,self.modeloR[row][i]
+                try:
+                    a=int(self.modeloR[row][i])
+                except:
+                    msg = """Error de ingreso de datos
+en la R(%s) : en el dato '''%s''' solo se aceptan numeros"""% (i,self.modeloR[row][i]) 
+                    aviso(self.wnIngreso,msg,tipo=gtk.MESSAGE_ERROR)
+                    return
                 re.append(self.modeloR[row][i])
             re.append(self.modeloR[row][self.variables+2])
             lista.append(re)
+        #print variablesBasicas
         
         dlg = Tabla(self.wnIngreso,
                     self.variables,
                     self.restricciones,
                     variablesBasicas,
-                    lista)
+                    lista,
+                    variablesA,
+                    todas,
+                    self.optMax.get_active())
         dlg.dlgTabla.run()
         
     def on_salir(self,*args):
         if __name__ == '__main__':
             gtk.main_quit()
-    
-
-            
-
-
-
-            
-
-
 
 if __name__ == '__main__':
     app = WnIngreso()
