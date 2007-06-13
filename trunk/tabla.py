@@ -87,8 +87,12 @@ class Tabla(GladeConnect):
             if dato[-1][0]=='A':
                 liss = []
                 for i in range(2,len(dato)-1):
-                    liss.append('%sM' % dato[i])
+                    if self.max:
+                        liss.append('%s-M' % dato[i])
+                    else:
+                        liss.append('%sM' % dato[i])
                 lis.append(liss)
+            print lis
         total=[]
         for j in range(0,len(lis[0])):
             sum=0
@@ -128,18 +132,18 @@ class Tabla(GladeConnect):
         row = self.modelo.get_path(iter)
         for i in range(0,len(regresa)):
             self.modelo.set(iter,i,regresa[i])    
-        print regresa    
+        #print regresa    
             
     def cargaDatos(self):
+        j=0
         for dato in self.lista:
             #si LD es negativo se multiplica la R por -1
-            j=1
             remplazo = []
             if int(dato[-1]) < 0:
                 for num in dato:
                     remplazo.append(int(num) * -1)
                 self.lista.insert(j,remplazo)
-                self.lista.pop(j+1)                
+                self.lista.pop(j+1)
             j=j+1
         n=0
         for dato in self.lista:
@@ -168,6 +172,7 @@ class Tabla(GladeConnect):
                             dato.insert(j,'1M')
                         else:
                             dato.insert(j,'-1M')
+                        ###########################
                         dato.pop(j + 1)
                     j=j+1
             n = n + 1
