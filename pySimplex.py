@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 #Copyright Juan Carrasco G. <juacarrag@gmail.com>
-#          Francisco Brunel.<franciscobrunel@gmail.com>
-#          Cesar Casrrion.  <carrioninf@gmail.com> 
-#          Francisco Ahumada.
-#	   Cristopher Drecmamm. 
+#          ##########
+#          ##########
+#          ########## 
 
 #pySimplexPL es software libre; puede redistribuirlo y/o modificarlo
 #bajo los términos de la Licencia Pública General de GNU tal como
@@ -159,16 +158,16 @@ class WnIngreso(GladeConnect):
     def on_acerca_de(self,*args):
         from time import localtime
         autores=['Juan Carrasco <juacarrag@gmail.com>',
-                 'Cesar Casrrion <carrioninf@gmail.COM>',
-                 'Francisco Ahumada <bbbbbbbbbbbbbbbb>',
+                 'Plumero <aaaaaaaaaaa>',
+                 'Kramer <bbbbbbbbbbbbbbbb>',
                  'Francisco Brunel <franciscobrunel@gmail.com>',
-                 'Cristopher Drecmamm <aaaaaaaaaaaaa>']
+                 'Pollo <aaaaaaaaaaaaa>']
         comentario="""Comentario aqui """
         copyright="\302\251 Copyright %s Juan Carrasco G.\n" % str(localtime()[0])
-        copyright=copyright +"\302\251 Copyright %s Cesar Casrrion..\n" % str(localtime()[0])
+        copyright=copyright +"\302\251 Copyright %s Plumero.\n" % str(localtime()[0])
         copyright=copyright +"\302\251 Copyright %s Francisco Brunel.\n" % str(localtime()[0])
-        copyright=copyright +"\302\251 Copyright %s Cristopher Drecmamm.\n" % str(localtime()[0])
-        copyright=copyright +"\302\251 Copyright %s Francisco Ahumada." % str(localtime()[0])
+        copyright=copyright +"\302\251 Copyright %s Pollo.\n" % str(localtime()[0])
+        copyright=copyright +"\302\251 Copyright %s Kramer." % str(localtime()[0])
         DialogoAcercaDe(padre=self.wnIngreso,
                         nombre='pySimplexPL',
                         autor=autores,
