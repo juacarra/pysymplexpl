@@ -246,6 +246,12 @@ en la F.O. : en el dato '''%s''' solo se aceptan numeros"""% (self.modelo[row][i
             iter=self.modeloR.get_iter(colum)
             row = self.modeloR.get_path(iter)
             n = n +1
+	    if int(self.modeloR[row][self.variables +2])<0:
+		print self.modeloR[row][self.variables +2]
+		if str(self.modeloR[row][self.variables + 1]) == '<=':
+            	    self.modeloR.set(iter,self.variables + 1,'>=') 
+		elif str(self.modeloR[row][self.variables + 1]) == '>=':
+		    self.modeloR.set(iter,self.variables + 1,'<=')
             if str(self.modeloR[row][self.variables + 1]) == '<=':
                 variablesBasicas.append('S%s' % n)
                 todas.append('S%s' % n)
