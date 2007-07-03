@@ -23,12 +23,14 @@
 from GladeConnect import *
 import gtk
 import SimpleTree
+import iteraciones
 
 class Tabla(GladeConnect):
     def __init__ (self,padre=None,variables=0,restricciones=0,variablesBasicas=[],lista=[],variablesA=[],todas=[],max=True):
         GladeConnect.__init__(self, "glade/pySimplex.glade", "dlgTabla")
         self.dlgTabla.set_transient_for(padre)
         #self.dlgTabla.maximize()
+        self.vuelta=0
         self.lvwTabla.set_rules_hint(True)
         self.variables = variables
         self.restricciones = restricciones
@@ -41,6 +43,7 @@ class Tabla(GladeConnect):
         self.max = max
         self.creaColumnas()
         self.cargaDatos()
+        
         
     def creaColumnas(self):
         num = 0
@@ -92,12 +95,13 @@ class Tabla(GladeConnect):
                     else:
                         liss.append('%sM' % dato[i])
                 lis.append(liss)
-            print lis
+            #print lis
         total=[]
         for j in range(0,len(lis[0])):
             sum=0
             for i in range(0,len(lis)):
-                sum=sum+int(lis[i][j][:-1])
+                #print lis[i][j]     aki metimo mano los conchetuma del trabajo qliao pal viejo rl ke le gusta la callampa seca
+                sum=sum+eval(lis[i][j][:-1])
             total.append('%sM' % sum)
         dato = self.datos[0]
         fo=[]
@@ -105,6 +109,7 @@ class Tabla(GladeConnect):
         for i in range(2,len(dato)-1):
             fo.append(dato[i])
         for i in range(0,len(total)):
+            print fo[i],'cuakier mierda'
             if fo[i][0] == '-':
                 final.append('%s %s' %(total[i],fo[i]))
             else:
@@ -139,7 +144,8 @@ class Tabla(GladeConnect):
         for dato in self.lista:
             #si LD es negativo se multiplica la R por -1
             remplazo = []
-            if int(dato[-1]) < 0:
+            #asdsadsadasdsadnsajfndjfndjksfnsjdnfjdsnfkjdnsjfndsjpicopal ke leeasdasdsfdsfgdsgfdg
+            if eval(dato[-1]) < 0:
                 for num in dato:
                     remplazo.append(int(num) * -1)
                 self.lista.insert(j,remplazo)
@@ -181,4 +187,12 @@ class Tabla(GladeConnect):
         self.calculaM()
         
     def on_cmdSiguiente_clicked(self, btn=None):
-        self.hide()
+        if self.vuelta==0:
+            iteraciones.reales(self.modelo,self.numColum)
+        x,y=iteraciones.encuentraCoordenadas(self.modelo,self.numColum)
+        iteraciones.divideFilaPorPivote(self.modelo,x,y,self.numColum,self.columnas[y])
+        self.vuelta=self.vuelta+1
+        
+        
+        
+        
