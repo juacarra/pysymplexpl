@@ -226,9 +226,14 @@ class WnIngreso(GladeConnect):
             try:
                 #######maximisar True#################
                 if self.optMax.get_active():
-                    fo.append(int(self.modelo[row][i]))
+                    fo.append(float(self.modelo[row][i]))
                 else:
-                    fo.append(int(self.modelo[row][i])*-1)
+                    if self.modelo[row][i].find('/') <>-1:
+                        fo.append((self.modelo[row][i])*-1)
+                    elif self.modelo[row][i].find('.') <>-1:
+                        fo.append((self.modelo[row][i])*-1)
+                    else:
+                        fo.append(int(self.modelo[row][i])*-1)
                 #################################
             except:
                 msg = """Error de ingreso de datos
@@ -246,12 +251,6 @@ en la F.O. : en el dato '''%s''' solo se aceptan numeros"""% (self.modelo[row][i
             iter=self.modeloR.get_iter(colum)
             row = self.modeloR.get_path(iter)
             n = n +1
-	    if int(self.modeloR[row][self.variables +2])<0:
-		print self.modeloR[row][self.variables +2]
-		if str(self.modeloR[row][self.variables + 1]) == '<=':
-            	    self.modeloR.set(iter,self.variables + 1,'>=') 
-		elif str(self.modeloR[row][self.variables + 1]) == '>=':
-		    self.modeloR.set(iter,self.variables + 1,'<=')
             if str(self.modeloR[row][self.variables + 1]) == '<=':
                 variablesBasicas.append('S%s' % n)
                 todas.append('S%s' % n)
@@ -270,7 +269,12 @@ en la F.O. : en el dato '''%s''' solo se aceptan numeros"""% (self.modelo[row][i
             for i in range(1,self.variables+1):
                 #print i,self.modeloR[row][i]
                 try:
-                    a=int(self.modeloR[row][i])
+                    if self.modeloR[row][i].find('/')<>-1:
+                        a=self.modeloR[row][i]
+                    elif self.modeloR[row][i].find('.')<>-1:
+                        a=self.modeloR[row][i]
+                    else:
+                        a=int(self.modeloR[row][i])
                 except:
                     msg = """Error de ingreso de datos
 en la R(%s) : en el dato '''%s''' solo se aceptan numeros"""% (i,self.modeloR[row][i]) 
